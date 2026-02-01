@@ -1,12 +1,1193 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Portfolio - Mirul</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mirul – Web Developer & System Architect</title>
+  <style>
+    :root {
+      --bg: #050816;
+      --bg-soft: #0b1220;
+      --accent: #f59e0b;
+      --accent-soft: rgba(245, 158, 11, 0.15);
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --card: #020617;
+      --border: #1f2937;
+      --danger: #f97373;
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --shadow-soft: 0 24px 80px rgba(15, 23, 42, 0.9);
+      --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-main);
+      background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #000 100%);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* Layout */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(to bottom, rgba(15, 23, 42, 0.9), transparent);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+    }
+
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #fbbf24, #4f46e5);
+      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      color: #020617;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      font-size: 13px;
+    }
+
+    .brand-text span:first-child {
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .brand-text span:last-child {
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      font-size: 13px;
+    }
+
+    .nav-links a {
+      padding: 4px 0;
+      position: relative;
+      color: var(--muted);
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -3px;
+      width: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #f97316, #22c55e, #38bdf8);
+      transition: width 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      font-size: 13px;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #f97316, #22c55e, #38bdf8);
+      color: #020617;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 35px rgba(15, 23, 42, 0.9);
+    }
+
+    main {
+      flex: 1;
+    }
+
+    .section {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 64px 20px;
+    }
+
+    .section-sm {
+      padding-top: 32px;
+      padding-bottom: 32px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 18px;
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    .section-kicker {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+    }
+
+    .section-description {
+      font-size: 13px;
+      color: var(--muted);
+      max-width: 480px;
+    }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.6fr);
+      gap: 40px;
+      align-items: center;
+      padding-top: 72px;
+      padding-bottom: 56px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--muted);
+    }
+
+    .chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 0, #4ade80, #22c55e);
+      box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.15);
+    }
+
+    .hero-title {
+      margin-top: 18px;
+      font-size: 38px;
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-title span.highlight {
+      background: linear-gradient(90deg, #f97316, #22c55e, #38bdf8);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--muted);
+      max-width: 480px;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 22px;
+      font-size: 12px;
+    }
+
+    .meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      color: var(--muted);
+    }
+
+    .meta-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .btn-primary {
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #020617;
+      background: linear-gradient(135deg, #f97316, #22c55e, #38bdf8);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.9);
+    }
+
+    .btn-ghost {
+      padding: 9px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--muted);
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    .hero-note {
+      margin-top: 18px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .hero-right {
+      position: relative;
+      perspective: 1200px;
+    }
+
+    .hero-card {
+      position: relative;
+      border-radius: 26px;
+      padding: 20px 18px 18px;
+      background: radial-gradient(circle at top, #1f2937, #020617);
+      box-shadow: var(--shadow-soft);
+      transform: rotate3d(1, -1.2, 0, 14deg);
+      border: 1px solid rgba(148, 163, 184, 0.35);
+      overflow: hidden;
+    }
+
+    .hero-card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .hero-card-grid {
+      display: grid;
+      grid-template-columns: 3fr 2.1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .hero-card-main {
+      border-radius: 20px;
+      background: linear-gradient(145deg, #22c55e 0, #0f172a 30%, #020617 100%);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .hero-card-main h3 {
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+
+    .hero-card-main p {
+      font-size: 11px;
+      color: #e5e7eb;
+      opacity: 0.85;
+    }
+
+    .hero-card-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .badge {
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: #e5e7eb;
+    }
+
+    .hero-card-stats {
+      border-radius: 18px;
+      background: rgba(15, 23, 42, 0.9);
+      padding: 10px 10px 2px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .stat-main {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(8, 47, 73, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.8);
+      font-size: 10px;
+      color: #e0f2fe;
+      margin-top: 6px;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #38bdf8;
+    }
+
+    .hero-card-orbit {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .orbit-glow {
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(56, 189, 248, 0.1), transparent 55%);
+      top: -60px;
+      right: -60px;
+      filter: blur(1px);
+    }
+
+    .orbit-line {
+      position: absolute;
+      width: 170px;
+      height: 170px;
+      border-radius: 999px;
+      border: 1px dashed rgba(148, 163, 184, 0.35);
+      top: 48%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .project-card {
+      position: relative;
+      background: radial-gradient(circle at top, #111827, #020617);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 14px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px) translateZ(0);
+      box-shadow: var(--shadow-soft);
+      border-color: rgba(251, 191, 36, 0.9);
+    }
+
+    .project-thumb {
+      border-radius: 12px;
+      background: linear-gradient(135deg, #1e293b, #020617);
+      padding: 14px;
+      margin-bottom: 10px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .project-label {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 4px;
+    }
+
+    .project-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .project-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 8px 0 10px;
+    }
+
+    .project-chip {
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--muted);
+    }
+
+    .project-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid rgba(31, 41, 55, 0.9);
+      padding-top: 8px;
+      margin-top: 4px;
+    }
+
+    .project-link {
+      font-size: 11px;
+      color: #fbbf24;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .project-link span {
+      font-size: 14px;
+    }
+
+    /* Process */
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .process-step {
+      background: radial-gradient(circle at top, #020617, #020617);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      padding: 14px 13px 13px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .process-tag {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .process-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .process-num {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    /* About & Stack */
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 2.4fr);
+      gap: 28px;
+    }
+
+    .about-card {
+      background: rgba(15, 23, 42, 0.88);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 18px 16px 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .about-card h3 {
+      font-size: 15px;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .about-tagline {
+      font-size: 12px;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .about-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+      font-size: 11px;
+    }
+
+    .about-pill {
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .about-pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .stack-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .stack-badge {
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      font-size: 11px;
+      color: var(--text);
+    }
+
+    .stack-badge.highlighted {
+      border-color: rgba(245, 158, 11, 0.9);
+      background: rgba(30, 64, 175, 0.6);
+    }
+
+    /* Contact */
+    .contact {
+      margin-top: 20px;
+    }
+
+    .contact-inner {
+      background: radial-gradient(circle at top, #020617, #020617);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 18px 16px 16px;
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .contact-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+    .contact-btn {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .contact-btn.primary {
+      border-color: rgba(245, 158, 11, 0.9);
+      background: linear-gradient(135deg, #f97316, #22c55e, #38bdf8);
+      color: #020617;
+      font-weight: 600;
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.9);
+    }
+
+    /* Footer */
+    .footer {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 20px 32px;
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      border-top: 1px solid rgba(15, 23, 42, 0.9);
+    }
+
+    /* Responsive */
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: minmax(0, 1.1fr);
+      }
+      .hero-right {
+        order: -1;
+      }
+      .hero-title {
+        font-size: 32px;
+      }
+      .projects-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .process-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .about-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .nav-inner {
+        padding-inline: 16px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding-top: 52px;
+      }
+      .projects-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .process-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .nav-links {
+        display: none;
+      }
+      .section {
+        padding-inline: 16px;
+      }
+      .section-header {
+        flex-direction: column;
+      }
+      .hero-card {
+        transform: none;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>Portfolio Website</h1>
-  <p>Full HTML coming soon...</p>
+  <div class="page">
+    <!-- NAV -->
+    <header class="nav">
+      <div class="nav-inner">
+        <div class="brand">
+          <div class="brand-avatar">M</div>
+          <div class="brand-text">
+            <span>PORTFOLIO</span>
+            <span>Mirul – Web Dev & Architect</span>
+          </div>
+        </div>
+        <nav class="nav-links">
+          <a href="#projects">Projects</a>
+          <a href="#process">Process</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+          Let’s build your system
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!-- HERO -->
+      <section class="section hero" id="top">
+        <div>
+          <div class="chip">
+            <span class="chip-dot"></span>
+            Available for selected projects – Remote & Malaysia
+          </div>
+          <h1 class="hero-title">
+            I design & build <span class="highlight">Web Systems</span> that quietly run your business.
+          </h1>
+          <p class="hero-subtitle">
+            Full‑stack developer & system architect focusing on Laravel, automation, and custom tools
+            for SMEs — from booking systems to HR, payroll, and member management.
+          </p>
+          <div class="hero-meta">
+            <div class="meta-item">
+              <span class="meta-dot"></span> 6+ years building web apps
+            </div>
+            <div class="meta-item">
+              <span class="meta-dot"></span> Based in Terengganu, working with clients online
+            </div>
+          </div>
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">
+              View selected projects
+            </button>
+            <button class="btn-ghost" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+              About & tech stack
+            </button>
+          </div>
+          <p class="hero-note">
+            Recently: automated deployment from GitHub → VPS, built WhatsApp‑driven booking flows, and shipped a
+            traditional massage booking system for local clients.
+          </p>
+        </div>
+
+        <div class="hero-right">
+          <div class="hero-card">
+            <div class="hero-card-tag">
+              <span>Live system snapshot</span>
+            </div>
+            <div class="hero-card-grid">
+              <div class="hero-card-main">
+                <div>
+                  <h3>Traditional Massage Booking</h3>
+                  <p>
+                    A conversion‑focused landing page & booking flow for a Malay urut therapist — integrated
+                    with WhatsApp and simple slot management.
+                  </p>
+                </div>
+                <div class="hero-card-badges">
+                  <span class="badge">Laravel</span>
+                  <span class="badge">Blade</span>
+                  <span class="badge">Tailwind</span>
+                  <span class="badge">WhatsApp API</span>
+                  <span class="badge">Hostinger VPS</span>
+                </div>
+              </div>
+              <div class="hero-card-stats">
+                <div class="stat-row">
+                  <span>Avg. bookings / week</span>
+                  <span class="stat-main">+34%</span>
+                </div>
+                <div class="stat-row">
+                  <span>Manual follow‑ups</span>
+                  <span class="stat-main">‑60%</span>
+                </div>
+                <div class="stat-row">
+                  <span>Stack</span>
+                  <span>Laravel · MySQL · WA Bot</span>
+                </div>
+                <div class="pill">
+                  <span class="pill-dot"></span>
+                  Real project for a local business in Terengganu
+                </div>
+              </div>
+            </div>
+            <div class="hero-card-orbit">
+              <div class="orbit-glow"></div>
+              <div class="orbit-line"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECTS -->
+      <section class="section section-sm" id="projects">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Selected work</div>
+            <h2 class="section-title">Web systems that ship & run.</h2>
+          </div>
+          <p class="section-description">
+            A snapshot of a few systems I’ve built for clients and personal projects — focused on
+            automation, internal tools, and reliable back‑office workflows.
+          </p>
+        </div>
+
+        <div class="projects-grid">
+          <!-- Project 1 -->
+          <article class="project-card">
+            <div class="project-thumb">
+              <strong>Massage booking funnel</strong><br />
+              Landing → WhatsApp pre‑filled → simple slot management UI.
+            </div>
+            <div class="project-label">Client project · 2026</div>
+            <div class="project-title">Traditional Malay Massage Booking</div>
+            <p class="project-copy">
+              Conversion‑driven single page with clear pricing, slot request form, map integration, and
+              WhatsApp automation to confirm bookings.
+            </p>
+            <div class="project-meta">
+              <span class="project-chip">Laravel</span>
+              <span class="project-chip">Blade</span>
+              <span class="project-chip">Custom CSS</span>
+              <span class="project-chip">WhatsApp API</span>
+            </div>
+            <div class="project-footer">
+              <span>Goal: more consistent weekly bookings</span>
+              <a class="project-link" href="#" target="_blank" rel="noreferrer">
+                Case study <span>↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 2 -->
+          <article class="project-card">
+            <div class="project-thumb">
+              <strong>Member QR system</strong><br />
+              Web dashboard + on‑the‑spot QR ID cards.
+            </div>
+            <div class="project-label">NGO · 2025</div>
+            <div class="project-title">Membership & QR Registration System</div>
+            <p class="project-copy">
+              Replaced scattered spreadsheets with a central app to manage members, generate QR cards, and
+              track attendance at events.
+            </p>
+            <div class="project-meta">
+              <span class="project-chip">Laravel</span>
+              <span class="project-chip">Livewire</span>
+              <span class="project-chip">MySQL</span>
+              <span class="project-chip">QR Generator</span>
+            </div>
+            <div class="project-footer">
+              <span>From 3+ tools → one internal system</span>
+              <a class="project-link" href="#" target="_blank" rel="noreferrer">
+                Case study <span>↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="project-card">
+            <div class="project-thumb">
+              <strong>Payroll cockpit</strong><br />
+              Monthly salary, allowances, and claims in one place.
+            </div>
+            <div class="project-label">Oil & Gas HR · 2024</div>
+            <div class="project-title">HR & Payroll System</div>
+            <p class="project-copy">
+              Built tools to calculate salary, overtime, and site allowance, plus history logs to keep
+              everything transparent for staff and admins.
+            </p>
+            <div class="project-meta">
+              <span class="project-chip">Laravel</span>
+              <span class="project-chip">PostgreSQL</span>
+              <span class="project-chip">Role‑based access</span>
+              <span class="project-chip">Internal tool</span>
+            </div>
+            <div class="project-footer">
+              <span>Reduced manual recalculation & errors</span>
+              <a class="project-link" href="#" target="_blank" rel="noreferrer">
+                Case study <span>↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 4 -->
+          <article class="project-card">
+            <div class="project-thumb">
+              <strong>Mini‑mart dashboard</strong><br />
+              Daily sales, stock, and simple reports.
+            </div>
+            <div class="project-label">Retail · 2024</div>
+            <div class="project-title">Small Grocery Store System</div>
+            <p class="project-copy">
+              Lightweight POS‑style back office to track sales, inventory, and supplier orders for a local
+              kedai runcit.
+            </p>
+            <div class="project-meta">
+              <span class="project-chip">Laravel</span>
+              <span class="project-chip">Livewire</span>
+              <span class="project-chip">MySQL</span>
+            </div>
+            <div class="project-footer">
+              <span>Owner sees numbers without Excel</span>
+              <a class="project-link" href="#" target="_blank" rel="noreferrer">
+                Case study <span>↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 5 -->
+          <article class="project-card">
+            <div class="project-thumb">
+              <strong>AI WhatsApp bot</strong><br />
+              Fun conversational bot for engagement.
+            </div>
+            <div class="project-label">Side project · 2025</div>
+            <div class="project-title">AI WhatsApp Chatbot</div>
+            <p class="project-copy">
+              Experimented with WA API + AI to build a bot that can chat, tease, and keep users engaged —
+              a playground for automation ideas.
+            </p>
+            <div class="project-meta">
+              <span class="project-chip">Node / PHP</span>
+              <span class="project-chip">WA API</span>
+              <span class="project-chip">OpenRouter</span>
+            </div>
+            <div class="project-footer">
+              <span>Testing ideas for future SaaS</span>
+              <a class="project-link" href="#" target="_blank" rel="noreferrer">
+                Case study <span>↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Project 6 -->
+          <article class="project-card">
+            <div class="project-thumb">
+              <strong>Auto‑deploy pipeline</strong><br />
+              GitHub → Hostinger VPS via actions.
+            </div>
+            <div class="project-label">Infra · 2026</div>
+            <div class="project-title">CI/CD for Laravel on VPS</div>
+            <p class="project-copy">
+              Built a simple but solid GitHub Actions workflow to deploy Laravel apps to a Hostinger VPS on
+              every push, keeping projects in sync with minimal manual steps.
+            </p>
+            <div class="project-meta">
+              <span class="project-chip">GitHub Actions</span>
+              <span class="project-chip">Hostinger VPS</span>
+              <span class="project-chip">Nginx</span>
+            </div>
+            <div class="project-footer">
+              <span>From manual uploads → push‑to‑deploy</span>
+              <a class="project-link" href="#" target="_blank" rel="noreferrer">
+                Case study <span>↗</span>
+              </a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- PROCESS -->
+      <section class="section section-sm" id="process">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">How I work</div>
+            <h2 class="section-title">A simple, no‑drama build process.</h2>
+          </div>
+          <p class="section-description">
+            Whether it’s a quick landing page or a full internal system, I keep the process transparent so
+            you always know what’s happening and what’s next.
+          </p>
+        </div>
+
+        <div class="process-grid">
+          <div class="process-step">
+            <div class="process-num">01</div>
+            <div class="process-tag">Discover</div>
+            <div class="process-title">Understand the real workflow</div>
+            <p>
+              We map what actually happens today — tools you use, people involved, and where time is wasted
+              or data gets lost.
+            </p>
+          </div>
+          <div class="process-step">
+            <div class="process-num">02</div>
+            <div class="process-tag">Design</div>
+            <div class="process-title">Plan the system & database</div>
+            <p>
+              I sketch screens, flows, and database structure so the system is easy to extend instead of
+              becoming a spaghetti mess in 6 months.
+            </p>
+          </div>
+          <div class="process-step">
+            <div class="process-num">03</div>
+            <div class="process-tag">Build</div>
+            <div class="process-title">Ship in small, usable slices</div>
+            <p>
+              Features go live in slices — so you can test with real data and give feedback before we invest
+              in advanced extras.
+            </p>
+          </div>
+          <div class="process-step">
+            <div class="process-num">04</div>
+            <div class="process-tag">Run</div>
+            <div class="process-title">Monitor, refine & automate</div>
+            <p>
+              Once live, we watch how people actually use it, then add automations (reports, reminders,
+              integrations) where it makes sense.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT & STACK -->
+      <section class="section section-sm" id="about">
+        <div class="section-header">
+          <div>
+            <div class="section-kicker">Behind the screens</div>
+            <h2 class="section-title">About me & tech I use.</h2>
+          </div>
+        </div>
+
+        <div class="about-grid">
+          <article class="about-card">
+            <h3>Hi, I’m Mirul.</h3>
+            <p class="about-tagline">
+              Web developer & system architect helping small teams replace messy spreadsheets with simple,
+              reliable tools.
+            </p>
+            <p>
+              I’ve spent the last few years building systems for SMEs, NGOs, and teams in oil & gas — mostly
+              around Laravel. I like projects where we can measure the impact: time saved, errors reduced, or
+              more sales booked automatically.
+            </p>
+            <p>
+              I’m based in Terengganu, but most work happens online. Outside of code, I enjoy testing new
+              ideas, tweaking performance, and playing badminton.
+            </p>
+            <div class="about-meta">
+              <div class="about-pill">
+                <span class="about-pill-dot"></span>
+                6+ years of web dev experience
+              </div>
+              <div class="about-pill">
+                <span class="about-pill-dot"></span>
+                Comfort zone: Laravel, MySQL, VPS
+              </div>
+            </div>
+          </article>
+
+          <article class="about-card">
+            <h3>Tech stack & tools.</h3>
+            <p>
+              I stick to tools that are stable, well‑supported, and easy to hand over — so your team isn’t
+              stuck with something only one person in the world can maintain.
+            </p>
+            <div class="stack-cloud" style="margin-top: 10px;">
+              <span class="stack-badge highlighted">Laravel</span>
+              <span class="stack-badge">PHP</span>
+              <span class="stack-badge">Blade / Livewire</span>
+              <span class="stack-badge">Tailwind CSS</span>
+              <span class="stack-badge">Alpine.js</span>
+              <span class="stack-badge">MySQL / PostgreSQL</span>
+              <span class="stack-badge">GitHub Actions</span>
+              <span class="stack-badge">Hostinger VPS / CloudPanel</span>
+              <span class="stack-badge">Nginx</span>
+              <span class="stack-badge">WhatsApp API (WAHA)</span>
+              <span class="stack-badge">OpenRouter / AI APIs</span>
+              <span class="stack-badge">Railway / Docker (for experiments)</span>
+            </div>
+          </article>
+        </div>
+
+        <!-- Contact CTA -->
+        <div class="contact" id="contact">
+          <div class="contact-inner">
+            <div>
+              <div class="section-kicker">Contact</div>
+              <h3 style="font-size: 15px; margin-top: 4px; margin-bottom: 6px; color: var(--text);">
+                Have a system or landing page in mind?
+              </h3>
+              <p>
+                Tell me what you’re trying to fix — manual work, messy data, or a new idea you want to test.
+                I’ll reply with a simple plan and rough scope.
+              </p>
+            </div>
+            <div class="contact-actions">
+              <a class="contact-btn primary" href="https://wa.me/601112345678" target="_blank" rel="noreferrer">
+                <span>💬</span> Chat via WhatsApp
+              </a>
+              <a class="contact-btn" href="mailto:you@example.com">
+                <span>✉️</span> Email me
+              </a>
+              <a class="contact-btn" href="https://github.com/yourusername" target="_blank" rel="noreferrer">
+                <span>🐙</span> GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <span>© 2026 Mirul. Built with HTML & CSS, deployed from GitHub.</span>
+      <span>Last updated: Feb 2026</span>
+    </footer>
+  </div>
 </body>
 </html>
